@@ -1,26 +1,38 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { useAppState } from './AppStateContext';
+import { Card } from './Card';
+import { Column } from './Column';
+import { AppContainer } from './styles';
+import { AddNewItem } from './AddNewItem';
 
-function App() {
+import CustomDragLayer  from './CustomDragLayer';
+
+const App = () => {
+  const {state,dispatch} = useAppState();
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <AppContainer>
+      {state.lists.map((list, i) => (
+        <Column id={list.id} text={list.text} key={list.id} index={i} />
+      ))}
+      {/* <AddNewItem 
+        toggleButtonText="+ Add another list"
+        onAdd={console.log}
+      /> */}
+      {/* <Column text="To Do">
+        <Card text="Generate app scaffold" />
+      </Column>
+      <Column text="In Progress">
+        <Card text="Learn Typescript" />
+      </Column>
+      <Column text="Done">
+        <Card text="Begin to use typing" />
+      </Column> */}
+      <AddNewItem 
+        toggleButtonText="+ Add another list" 
+        onAdd={text => dispatch({type:"ADD_LIST",payload:text})} 
+      />
+    </AppContainer>
+  )
 }
 
 export default App;
